@@ -1,0 +1,34 @@
+extends layout
+
+block title
+  title 萤火虫
+
+block content
+  header
+    nav.project-list
+      a(v-for="item in projectList" @click="selectProject(item)" v-bind:class="{ current: item === currentProject }") {{ item }}
+    input(type="text" placeholder="请填写项目名称" id="addProject" v-model="newProjectName")
+    a(@click="addProject") 添加
+  .add-wrap
+    h3 添加/修改：
+      a.clear(href="javascript:void(0)" @click="clear") 空
+    ul
+      li.url
+        label(for="addUrl") url: /api/
+        input#addUrl(type="text" v-model="url")
+      li
+        label(for="addContent") Mock:
+        textarea#addContent(v-model="content" @keydown="writeContent")
+      li
+        a.submit(href="javascript:void(0)" @click="submitMock") 提交
+  .mocklist-wrap
+    h3 Mock List：
+    ul
+      li.item(v-for="item in mockList")
+        a.go(href="/api/{{item}}") GO
+        a(href="javascript:void(0)" @click="modifyMock(item)") /api/{{item}}
+        a(href="javascript:void(0)" @click="deleteMock(item)") 删
+
+block scripts
+  script(src='/javascripts/layer/layer.js')
+  script(src='/javascripts/index.js')

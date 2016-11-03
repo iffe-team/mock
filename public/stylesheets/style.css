@@ -1,0 +1,89 @@
+header {
+  background-color: #F1F1F1;
+  padding: 5px;
+}
+.project-list {
+  display: inline-block;
+  margin-right: 10px;
+}
+.project-list a{
+  margin-left: 5px;
+  font-size: 18px;
+  color: #666;
+}
+.project-list a.current {
+  color: #8dda27;
+}
+.add-wrap{
+  float: right;
+  padding: 20px;
+  width: 50%;
+}
+.add-wrap label, .add-wrap input {
+  font-weight: bold;
+  color: #333;
+  font-size: 18px;
+}
+#addUrl{
+  border:0;border-bottom: 1px solid #555;
+}
+#addContent {
+  display: block;
+  width: 100%;
+  height: 60vh;
+  border-color: #555;
+  resize: both;
+}
+.add-wrap .clear {
+  float: right;
+  border: 1px solid #000;
+  border-radius: 100px;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  background-color: #8dda27;
+  text-decoration: none;
+  border-color: #FFF;
+  color: #FFF;
+}
+.add-wrap .submit {
+  float: right;
+  border: 1px solid #000;
+  border-radius: 3px 10px;
+  background-color: #F1F1F1;
+  margin-top: 5px;
+  padding: 5px 15px;
+  text-decoration: none;
+  border-color: #555;
+  color: #555;
+}
+.add-wrap .submit:hover {
+  background-color: #F3F3F3;
+  border-color: #000;
+  color: #000;
+}
+
+h3{
+  font-size: 24px;
+  color: #000;
+}
+
+.mocklist-wrap{
+  padding: 20px;
+}
+.mocklist-wrap .item {
+  margin-top: 5px;
+}
+.mocklist-wrap .item a{
+  margin-right: 10px;
+}
+.mocklist-wrap .go{
+  padding: 0 4px;
+  text-align: center;
+  display: inline-block;
+  border-radius: 30px;
+  background-color: #b7b6b6;
+  color: #FFF;
+  text-decoration: none;
+}
