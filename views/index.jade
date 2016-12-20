@@ -4,14 +4,14 @@ block title
   title 萤火虫
 
 block content
-  header
-    nav.project-list
-      a(v-for="item in projectList" @click="selectProject(item)" v-bind:class="{ current: item === currentProject }") {{ item }}
-    input(type="text" placeholder="请填写项目名称" id="addProject" v-model="newProjectName")
-    a(@click="addProject") 添加
+  //- header
+  //-   nav.project-list
+  //-     a(v-for="item in projectList" @click="selectProject(item)" v-bind:class="{ current: item === currentProject }") {{ item }}
+  //-   input(type="text" placeholder="请填写项目名称" id="addProject" v-model="newProjectName")
+  //-   a(@click="addProject") 添加
   .add-wrap
     h3 添加/修改：
-      a.clear(href="javascript:void(0)" @click="clear") 空
+      a.clear(href="javascript:void(0)" @click="clear")  新增
     ul
       li.url
         label(for="addUrl") url: /api/
@@ -22,12 +22,13 @@ block content
       li
         a.submit(href="javascript:void(0)" @click="submitMock") 提交
   .mocklist-wrap
-    h3 Mock List：
+    h3 Mock List：(共 {{totalPage}} 条记录)
     ul
       li.item(v-for="item in mockList")
-        a.go(href="/api/{{item}}") GO
-        a(href="javascript:void(0)" @click="modifyMock(item)") /api/{{item}}
-        a(href="javascript:void(0)" @click="deleteMock(item)") 删
+        a.go(href="/api/{{item}}" target="_blank") GO
+        span.serial() {{$index + 1}}.
+        a.apiHref(href="javascript:void(0)" @click="modifyMock(item)")  /api/{{item}}
+        a.del(href="javascript:void(0)" @click="deleteMock(item)") 删
 
 block scripts
   script(src='/javascripts/layer/layer.js')

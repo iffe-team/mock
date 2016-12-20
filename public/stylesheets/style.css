@@ -15,9 +15,12 @@ header {
   color: #8dda27;
 }
 .add-wrap{
-  float: right;
+  position: fixed;
+  top: 0;
+  right: 0;
   padding: 20px;
-  width: 50%;
+  margin-right: 20px;
+  width: 45%;
 }
 .add-wrap label, .add-wrap input {
   font-weight: bold;
@@ -26,6 +29,7 @@ header {
 }
 #addUrl{
   border:0;border-bottom: 1px solid #555;
+  width: 360px
 }
 #addContent {
   display: block;
@@ -36,16 +40,17 @@ header {
 }
 .add-wrap .clear {
   float: right;
-  border: 1px solid #000;
-  border-radius: 100px;
-  width: 50px;
-  height: 50px;
-  line-height: 50px;
-  text-align: center;
-  background-color: #8dda27;
-  text-decoration: none;
-  border-color: #FFF;
-  color: #FFF;
+    border: 1px solid #000;
+    border-radius: 100px;
+    width: 70px;
+    height: 37px;
+    line-height: 37px;
+    text-align: center;
+    background-color: #8dda27;
+    text-decoration: none;
+    border-color: #FFF;
+    color: #FFF;
+    font-size: 16px;
 }
 .add-wrap .submit {
   float: right;
@@ -71,9 +76,12 @@ h3{
 
 .mocklist-wrap{
   padding: 20px;
+  margin-left: 15px;
 }
 .mocklist-wrap .item {
-  margin-top: 5px;
+  margin-top: 8px;
+}
+.mocklist-wrap ul{ 
 }
 .mocklist-wrap .item a{
   margin-right: 10px;
@@ -83,7 +91,19 @@ h3{
   text-align: center;
   display: inline-block;
   border-radius: 30px;
-  background-color: #b7b6b6;
+  background-color: #8dda27;
   color: #FFF;
   text-decoration: none;
+}
+.mocklist-wrap .del{
+  margin-left: 30px;
+  background-color: #ccc;
+  padding: 5px 10px;
+  border-radius: 10px;  
+}
+.mocklist-wrap .apiHref{
+  text-decoration: underline;
+}
+.mocklist-wrap .serial{
+  color: #060606
 }

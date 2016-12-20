@@ -1,3 +1,4 @@
+'use strict'
 let fs = require('fs')
 let util = require('../common/util')
 let dataDir = __dirname + '/../data/'
@@ -9,16 +10,18 @@ exports.listPage = (req, res, next) => {
 
 // 获取 mock列表 数据
 exports.getMockList = (req, res, next) => {
-    let project = req.query.project
-    fs.readdir(dataDir + encodeURIComponent(project), function(err, files) {
+    fs.readdir(dataDir, function(err, files) {
         if (err) {
             res.json({ code: 1, error: '查询数据异常' })
             throw err
         }
+        let newFiles = []
         files.forEach((item, index) => {
-            files[index] = decodeURIComponent(item)
+            if (item !== '.svn' && item !== '.DS_Store') {
+                newFiles.push(decodeURIComponent(item))
+            }
         })
-        res.json({ code: 0, error: 'success', data: files })
+        res.json({ code: 0, error: 'success', data: newFiles })
     })
 }
 
@@ -27,8 +30,7 @@ exports.addMock = (req, res, next) => {
     let params = req.body
     let url = params.url
     let content = params.content
-    let project = params.project
-    if (!url || !content || !project) {
+    if (!url || !content) {
         res.json({
             code: 1,
             message: '缺少必要入参'
@@ -42,7 +44,7 @@ exports.addMock = (req, res, next) => {
         });
         return
     }
-    fs.writeFile(dataDir + encodeURIComponent(project) + '/' + encodeURIComponent(url), content, function(err) {
+    fs.writeFile(dataDir + encodeURIComponent(url), content, function(err) {
         if (err) throw err;
         res.json({
             code: 0,
@@ -54,8 +56,7 @@ exports.addMock = (req, res, next) => {
 // 请求一条 mock 数据
 exports.getMock = (req, res, next) => {
     let fileName = req.query.url
-    let project = req.query.project
-    let filePath = dataDir + encodeURIComponent(project) + '/' + encodeURIComponent(fileName)
+    let filePath = dataDir + encodeURIComponent(fileName)
     fs.exists(filePath, function(exists) {
         if (exists) {
             fs.readFile(filePath, 'utf8', function(err, data) {
@@ -63,7 +64,7 @@ exports.getMock = (req, res, next) => {
                 res.json({ code: 0, message: 'success', data: JSON.parse(data) })
             })
         } else {
-            res.json({ code: 1, error: '没有该条mock数据' });
+            res.status(404).json({ code: 1, error: '没有该条mock数据' });
         }
     })
 }
@@ -79,7 +80,7 @@ exports.apiMock = (req, res, next) => {
                 res.json(JSON.parse(data))
             });
         } else {
-            res.json({ code: 1, error: '没有该条mock数据' });
+            res.status(404).json({ code: 1, error: '没有该条mock数据' });
         }
     })
 }
@@ -87,8 +88,7 @@ exports.apiMock = (req, res, next) => {
 // 删除一条 mock 数据
 exports.deleteMock = (req, res, next) => {
     let fileName = req.body.url
-    let project = req.body.project
-    let filePath = dataDir + encodeURIComponent(project) + '/' + encodeURIComponent(fileName)
+    let filePath = dataDir + encodeURIComponent(fileName)
     fs.exists(filePath, function(exists) {
         if (exists) {
             fs.unlink(filePath, function(err) {
@@ -96,7 +96,7 @@ exports.deleteMock = (req, res, next) => {
                 res.json({ code: 0, message: 'success' });
             });
         } else {
-            res.json({ code: 1, message: '没有该条mock数据' });
+            res.status(404).json({ code: 1, message: '没有该条mock数据' });
         }
     })
 }
@@ -124,7 +124,7 @@ exports.addProject = (req, res, next) => {
     let path = dataDir + encodeURIComponent(name)
     fs.exists(path, function(exists) {
         if (!exists) {
-            fs.mkdir(path, 0777, function(err) {
+            fs.mkdir(path, '0777', function(err) {
                 if (err) throw err
                 res.json({ code: 0, message: 'success' });
             })

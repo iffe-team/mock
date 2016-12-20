@@ -1,49 +1,20 @@
 var vm = new Vue({
     el: '#app',
     data: {
-        projectList: [],
-        currentProject: '',
-        newProjectName: '',
         url: '',
         content: '',
-        mockList: [1,2]
+        mockList: [],
+        totalPage: 0
     },
     created: function () {
-        this.currentProject = location.hash.length > 0 ? location.hash.substr(1) : ''
-        this.getProjectList()
         this.getMockList()
     },
     methods: {
-        getProjectList: function () {
-            $.get('/getProjectList', {}, function(result) {
-                if (result.code === 0) {
-                    vm.projectList = result.data
-                } else {
-                    layer.msg(result.message, {icon: 2});
-                }
-            })
-        },
-        addProject: function () {
-            var data = { name: this.newProjectName }
-            $.post('/addProject', data, function(result) {
-                if (result.code === 0) {
-                    layer.msg('添加项目成功', {icon: 1});
-                    vm.getProjectList()
-                    vm.newProjectName = ''
-                } else {
-                    layer.msg(result.message, {icon: 2});
-                }
-            })
-        },
-        selectProject: function (item) {
-            this.currentProject = item
-            location.hash = item
-        },
         getMockList: function () {
-            let data = { project: this.currentProject }
-            $.get('/getMockList', data, function(result) {
+            $.get('/getMockList', {}, function(result) {
                 if (result.code === 0) {
                     vm.mockList = result.data
+                    vm.totalPage = result.data.length
                 } else {
                     layer.msg(result.message, {icon: 2});
                 }
@@ -51,10 +22,10 @@ var vm = new Vue({
         },
         clear: function () {
             vm.url = ''
-            vm.content = ''
+            vm.content = '{"responseCode": "000000", "responseMsg": "成功"}'
         },
         modifyMock: function (url) {
-            var data = { url: url, project: this.currentProject }
+            var data = { url: url }
             $.get('/getMock', data, function(result) {
                 if (result.code === 0) {
                     vm.url = url
@@ -65,15 +36,18 @@ var vm = new Vue({
             })
         },
         deleteMock: function (url) {
-            var data = { url: url, project: this.currentProject }
-            $.post('/deleteMock', data, function(result) {
-                if (result.code === 0) {
-                    vm.getMockList()
-                    layer.msg('删除成功', {icon: 1});
-                } else {
-                    layer.msg(result.message, {icon: 2});
-                }
-            })
+            var data = { url: url }
+            layer.confirm('确认是否需要删除？', {icon: 3, title:'提示'}, function(index){
+                $.post('/deleteMock', data, function(result) {
+                    if (result.code === 0) {
+                        vm.getMockList()
+                        layer.msg('删除成功', {icon: 1});
+                    } else {
+                        layer.msg(result.message, {icon: 2});
+                    }
+                })
+                layer.close(index);
+            });
         },
         writeContent: function (event) {
             if (event.key === 'Tab') {
@@ -89,7 +63,6 @@ var vm = new Vue({
         },
         submitMock: function () {
             var data = {
-                project: this.currentProject,
                 url: this.url,
                 content: this.content
             }
